@@ -39,24 +39,24 @@
 
 针对每一种具体的 PEFT 方法，`peft` 库都提供了一个继承自 `PeftConfig` 的子类，例如 `LoraConfig`、`PromptTuningConfig` 等。以 `LoraConfig` 为例，它包含了 LoRA 方法专属的超参数，这些参数直接源于 LoRA 论文中的定义：
 
--   `r`：LoRA 的**秩（rank）**，决定了低秩矩阵 A 和 B 的中间维度 `(d, r)` 和 `(r, k)`。它是控制新增参数量和模型适应能力的核心超参数。
+- `r`：LoRA 的**秩（rank）**，决定了低秩矩阵 A 和 B 的中间维度 `(d, r)` 和 `(r, k)`。它是控制新增参数量和模型适应能力的核心超参数。
 
--   `lora_alpha`：LoRA 的**缩放因子**。在 LoRA 的计算中，低秩矩阵的输出 `BAx` 会乘以一个缩放系数 `alpha/r`。`lora_alpha` 就是这个公式中的 `alpha`，它用于调整低秩适应矩阵与原始权重矩阵合并时的尺度。
+- `lora_alpha`：LoRA 的**缩放因子**。在 LoRA 的计算中，低秩矩阵的输出 `BAx` 会乘以一个缩放系数 `alpha/r`。`lora_alpha` 就是这个公式中的 `alpha`，它用于调整低秩适应矩阵与原始权重矩阵合并时的尺度。
 
--   `target_modules`：一个字符串或正则表达式列表，用于 **精确指定要将 LoRA 应用于基础模型中的哪些模块**。如，`["q_proj", "v_proj"]` 表示仅在 Transformer 层的 `query` 和 `value` 投影矩阵上应用 LoRA。
+- `target_modules`：一个字符串或正则表达式列表，用于 **精确指定要将 LoRA 应用于基础模型中的哪些模块**。如，`["q_proj", "v_proj"]` 表示仅在 Transformer 层的 `query` 和 `value` 投影矩阵上应用 LoRA。
 
--   `lora_dropout`：在 LoRA 层上应用的 Dropout 比例，用于防止过拟合。
+- `lora_dropout`：在 LoRA 层上应用的 Dropout 比例，用于防止过拟合。
 
--   `bias`：偏置参数的训练方式，可选值为 `'none'`（冻结所有 bias）、`'all'`（训练所有 bias）或 `'lora_only'`（仅训练 LoRA 模块自身的 bias）。
+- `bias`：偏置参数的训练方式，可选值为 `'none'`（冻结所有 bias）、`'all'`（训练所有 bias）或 `'lora_only'`（仅训练 LoRA 模块自身的 bias）。
 
 ### 2.2 动态注入生成 PeftModel
 
 `get_peft_model` 是 `peft` 库中的核心工厂函数。它接收一个原始的预训练模型和一个 `PeftConfig` 对象，然后执行以下操作：
 
-1.  解析 `PeftConfig`，确定要使用的 PEFT 方法和相关参数。
-2.  遍历基础模型的网络结构，根据 `target_modules` 找到需要注入 LoRA 模块的目标层。
-3.  将原始的目标层（如 `nn.Linear`）替换/封装为注入了 LoRA 的线性模块（如 LoraLinear 或其 k-bit 量化变体）。该模块内部保留冻结的原始权重，并引入可训练的低秩分支 A 和 B。
-4.  返回一个 `PeftModel` 实例。
+- 解析 `PeftConfig`，确定要使用的 PEFT 方法和相关参数。
+- 遍历基础模型的网络结构，根据 `target_modules` 找到需要注入 LoRA 模块的目标层。
+- 将原始的目标层（如 `nn.Linear`）替换/封装为注入了 LoRA 的线性模块（如 LoraLinear 或其 k-bit 量化变体）。该模块内部保留冻结的原始权重，并引入可训练的低秩分支 A 和 B。
+- 返回一个 `PeftModel` 实例。
 
 返回的 `peft_model` 对象是一个高度封装的模型。它内部保留了对原始基础模型的引用，并通过动态修改其 `forward` 传递路径，实现了 LoRA 逻辑的注入。这个 `peft_model` 实例拥有与基础模型完全兼容的接口，可以直接用于 `Trainer` 或自定义的训练循环中。
 
@@ -140,10 +140,14 @@ tokenizer.pad_token = tokenizer.eos_token
 > 在 PEFT 0.10.0 及更高版本中，原来的 `prepare_model_for_int8_training` 已被 `prepare_model_for_kbit_training` 替代，新函数同时支持 4-bit 和 8-bit 量化。
 
 这个函数主要执行几个关键操作：
-1.  **类型转换**：将模型中一些需要以更高精度（如 FP32）计算的层（例如 LayerNorm）进行类型转换，以保证训练的数值稳定性。
-2.  **启用梯度检查点**：调用 `model.gradient_checkpointing_enable()`，这是一种用计算时间换取显存的技术。它在反向传播时会重新计算中间层的激活值，而不是将它们全部存储在显存中，从而显著降低了训练过程中的显存峰值。
-3.  **输出嵌入层预处理**：对模型的输出嵌入层进行一些必要的处理，以使其与 LoRA 兼容。
-4.  **输入梯度处理**：为需要的输入启用梯度，保证在冻结大部分权重且使用 k-bit 训练时的反向传播兼容性。
+
+（1）**类型转换**：将模型中一些需要以更高精度（如 FP32）计算的层（例如 LayerNorm）进行类型转换，以保证训练的数值稳定性。
+
+（2）**启用梯度检查点**：调用 `model.gradient_checkpointing_enable()`，这是一种用计算时间换取显存的技术。它在反向传播时会重新计算中间层的激活值，而不是将它们全部存储在显存中，从而显著降低了训练过程中的显存峰值。
+
+（3）**输出嵌入层预处理**：对模型的输出嵌入层进行一些必要的处理，以使其与 LoRA 兼容。
+
+（4）**输入梯度处理**：为需要的输入启用梯度，保证在冻结大部分权重且使用 k-bit 训练时的反向传播兼容性。
 
 ```python
 from peft import prepare_model_for_kbit_training

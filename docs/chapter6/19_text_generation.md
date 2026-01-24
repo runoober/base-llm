@@ -103,7 +103,7 @@ GenerationConfig {
 
 （3）接着在 `generation_mode = generation_config.get_generation_mode(assistant_model)` 这行也下个断点。恢复程序后，我们可以看到多了个变量 `model_kwargs`，其中包括了 `input_ids` 和 `attention_mask`。同时 `GenerationConfig` 中的默认值（如 `max_new_tokens`）也被传参覆盖。
 
-（4）我们下一步看看本次推理会走哪种解码策略，可以选择在 `decoding_method = getattr(type(self), GENERATION_MODES_MAPPING[generation_mode])` 这行下个断点，也可以直接步过（Step Over）。如图 6-23 可以看到 `generation_mode` 的值是 `<GenerationMode.SAMPLE: 'sample'>`，说明本次会走**采样（Sampling）**分支：通常对应 `do_sample=True` 且 `num_beams=1`（区别于 `do_sample=False,num_beams=1` 的贪心，以及 `num_beams>1` 的 beam 系列策略；如果 `do_sample=True` 且 `num_beams>1`，则会走 `BEAM_SAMPLE`）。采样的含义是每一步不是“永远选概率最大的 token”，而是在（可能经过 `temperature/top_k/top_p` 等处理后的）概率分布上随机采样一个 token，所以输出通常会更有多样性。这部分具体判定代码可以使用 Ctrl + B 转到 `generation_config.get_generation_mode(...)` 的代码定义进行查看。
+（4）我们下一步看看本次推理会走哪种解码策略，可以选择在 `decoding_method = getattr(type(self), GENERATION_MODES_MAPPING[generation_mode])` 这行下个断点，也可以直接步过（Step Over）。如图 6-23 可以看到 `generation_mode` 的值是 `<GenerationMode.SAMPLE: 'sample'>`，说明本次会走**采样（Sampling）**分支，通常对应 `do_sample=True` 且 `num_beams=1`（区别于 `do_sample=False,num_beams=1` 的贪心，以及 `num_beams>1` 的 beam 系列策略；如果 `do_sample=True` 且 `num_beams>1`，则会走 `BEAM_SAMPLE`）。采样的含义是每一步不是“永远选概率最大的 token”，而是在（可能经过 `temperature/top_k/top_p` 等处理后的）概率分布上随机采样一个 token，所以输出通常会更有多样性。这部分具体判定代码可以使用 Ctrl + B 转到 `generation_config.get_generation_mode(...)` 的代码定义进行查看。
 
 <p align="center">
   <img src="./images/6_3_8.png" width="90%" alt="采样分支" />
@@ -236,7 +236,7 @@ GenerationConfig {
 
 （3）Beam Sample（束采样）：beam 框架 + 采样
 
-当 `num_beams>1` 且 `do_sample=True`（并且 `num_beam_groups==1`）时，`generate()` 通常会选择 `GenerationMode.BEAM_SAMPLE`。你可以把它理解成“beam search 的框架不变，但每一步的扩展不再是纯 top-k 硬选，而是引入采样带来的随机性/多样性”。它的适用场景通常是：既希望保留多条候选路径的搜索能力，又希望输出不要过于死板；但在大模型开放式对话里，工程上更常见的仍是直接 Sampling（`num_beams=1`）+ top-p/temperature，Beam Sample 相对少见一些，你可以把它当作“可选的折中策略”。
+当 `num_beams>1` 且 `do_sample=True`（并且 `num_beam_groups==1`）时，`generate()` 通常会选择 `GenerationMode.BEAM_SAMPLE`。你可以把它理解成“beam search 的框架不变，但每一步的扩展不再是纯 top-k 硬选，而是引入采样带来的随机性/多样性”。它的适用场景通常是既希望保留多条候选路径的搜索能力，又希望输出不要过于死板；但在大模型开放式对话里，工程上更常见的仍是直接 Sampling（`num_beams=1`）+ top-p/temperature，Beam Sample 相对少见一些，你可以把它当作“可选的折中策略”。
 
 （4）Beam Search（束搜索）：更“序列级”的搜索，但更慢也更保守
 

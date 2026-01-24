@@ -1,5 +1,5 @@
 - **第一部分：理论篇**
-    - **第 1 章：NLP简介**
+    - **第 1 章：NLP 简介**
         - [NLP 概述](chapter1/01_nlp_intro.md)
         - [环境准备](chapter1/02_preparation.md)
     - **第 2 章：文本表示与词向量**
@@ -10,7 +10,7 @@
     - **第 3 章：循环神经网络**
         - [循环神经网络](chapter3/08_RNN.md)
         - [LSTM 与 GRU](chapter3/09_LSTM&GRU.md)
-    - **第 4 章：注意力机制与Transformer**
+    - **第 4 章：注意力机制与 Transformer**
         - [Seq2Seq 架构](chapter4/10_seq2seq.md)
         - [注意力机制](chapter4/11_attention.md)
         - [深入解析 Transformer](chapter4/12_transformer.md)
@@ -61,3 +61,7 @@
     - **第 1 章：安全全景与威胁建模**
         - [大模型安全总览](chapter16/01_LLM_safety_overview.md)
         - [威胁建模及风险分析](chapter16/02_threat_modeling_analysis.md)
+
+- **第六部分：多模态前沿**
+    - **第 1 章：多模态全景概述**
+        - [认识多模态边界](chapter19/01_multimodal_definition.md)
