@@ -2,20 +2,18 @@
 
 ## 一、文本分类任务概述
 
-文本分类是 NLP 中常见的任务之一。它的目标是：给定一段文本，自动地将其分配到一个或多个预定义的类别中。典型的应用分类包括：
+文本分类是 NLP 中常见的任务之一。它的目标是给定一段文本，自动地将其分配到一个或多个预定义的类别中。典型的应用分类包括：
 
 -   **情感分析**：判断一条评论（如商品评价、电影评论）是正面的、负面的还是中性的。
 -   **新闻分类**：将一篇新闻报道自动归类到体育、财经、科技、娱乐等不同频道。
 -   **意图识别**：在智能客服或语音助手中，识别用户输入的指令属于哪个意图（如“查询天气”、“播放音乐”）。
 -   **垃圾邮件过滤**：自动识别并过滤掉收件箱中的垃圾邮件。
 
-在理论篇的 **第二章** 中，已经学习了如何将文本进行分词，并通过词向量技术将其转换为模型可以理解的数值形式。本节将在此基础上，以一个经典的新闻分类任务为例，详细讲解如何从零开始，一步步构建、训练和评估一个用于文本分类的深度学习模型。这个过程将涵盖数据处理、模型设计、训练循环、推理预测等所有核心环节。
+在理论篇的**第二章**中，已经学习了如何将文本进行分词，并通过词向量技术将其转换为模型可以理解的数值形式。本节将在此基础上，以一个经典的新闻分类任务为例，详细讲解如何从零开始，一步步构建、训练和评估一个用于文本分类的深度学习模型。这个过程将涵盖数据处理、模型设计、训练循环、推理预测等所有核心环节。
 
 ## 二、NLP 项目通用流程
 
-无论是文本分类，还是其他更复杂的NLP任务，其深度学习解决方案通常遵循一个标准化的项目流程。
-
-可以概括为以下几个核心模块：
+无论是文本分类，还是其他更复杂的NLP任务，其深度学习解决方案通常遵循一个标准化的项目流程。可以概括为以下几个核心模块：
 
 ```mermaid
 graph LR
@@ -72,7 +70,7 @@ sample = {
 sample
 ```
 
-输出：
+输出如下：
 ```bash
 {'text_preview': 'From: sd345@city.ac.uk (Michael Collier)\nSubject: Converting images to HP LaserJet III?\nNntp-Posting-Host: hampton\nOrganization: The City University\nLines: 14\n\nDoes anyone know of a good way (standard',
  'label': 'comp.graphics'}
@@ -82,7 +80,7 @@ sample
 
 在进行任何复杂的预处理之前，对数据进行探索性分析是很重要且必要的。这有助于我们理解数据特性，从而做出更合理的设计决策。
 
-**1. 文本长度分布：**
+（1）**文本长度分布：**
 
 ```python
 import matplotlib.pyplot as plt
@@ -114,7 +112,7 @@ plt.show()
   <em>图 7-1 训练集文本长度分布</em>
 </p>
 
-**2. 词频分布：**
+（2）**词频分布：**
 
 ```python
 from collections import Counter
@@ -154,7 +152,7 @@ plt.show()
 
 创建一个`Tokenizer`（分词器）类，它将负责所有与分词、词典构建和ID转换相关的任务。它封装了与数据探索时相同的分词逻辑，并增加了ID转换等功能。其主要逻辑是：
 
-- **分词策略**：`_tokenize_text` 方法实现了一套基于正则表达式的分词策略：先将文本转为小写；然后，通过 `re.sub` 移除非字母、数字和基本标点之外的字符；接着，为了确保标点符号能被作为独立的词元，在它们周围添加空格；最后，按空格切分文本，得到词元列表。
+- **分词策略**：`_tokenize_text` 方法实现了一套基于正则表达式的分词策略。先将文本转为小写，然后通过 `re.sub` 移除非字母、数字和基本标点之外的字符；接着，为了确保标点符号能被作为独立的词元，在它们周围添加空格；最后，按空格切分文本，得到词元列表。
 - **词典构建**：遍历所有训练文本，统计词频，并过滤掉出现次数过少的低频词，以减少词典规模和噪声。同时，词典初始化时会预设两个特殊的Token：`<PAD>`（用于填充，ID为0）和`<UNK>`（用于表示未登录词，ID为1）。
 
 ```python
@@ -201,7 +199,7 @@ tokenizer = Tokenizer(vocab)
 {"vocab_size": len(tokenizer)}
 ```
 
-输出：
+输出如下：
 ```bash
 {'vocab_size': 10983}
 ```
@@ -217,12 +215,14 @@ tokenizer = Tokenizer(vocab)
 - ...以此类推
 
 这样做有两大好处：
-1. **信息保全**：完整地利用了整篇文章的信息。
-2. **数据增强**：将一篇长文档变成了多条训练样本，增加了训练数据量，有助于模型学习。
+
+（1）**信息保全**：完整地利用了整篇文章的信息。
+
+（2）**数据增强**：将一篇长文档变成了多条训练样本，增加了训练数据量，有助于模型学习。
 
 #### 3.2.6 封装 `Dataset` 和 `DataLoader`
 
-`TextClassificationDataset` 负责的核心逻辑是：接收原始文本，调用`tokenizer`进行ID化，并应用 **滑窗分割** 策略处理长文本。如果文本超过`max_len`，则会进行切分。代码中的 `stride` 被设置为 `max_len` 的 80%，意味着每个文本块之间有20%的重叠，这有助于保持上下文信息的连续性。
+`TextClassificationDataset` 负责的核心逻辑是接收原始文本，调用`tokenizer`进行ID化，并应用 **滑窗分割** 策略处理长文本。如果文本超过`max_len`，则会进行切分。代码中的 `stride` 被设置为 `max_len` 的 80%，意味着每个文本块之间有20%的重叠，这有助于保持上下文信息的连续性。
 
 ```python
 import torch
@@ -291,7 +291,7 @@ valid_loader = DataLoader(valid_dataset, batch_size=32, collate_fn=collate_fn)
 {"train_samples": len(train_dataset), "valid_samples": len(valid_dataset), "batch_size": 32}
 ```
 
-输出：
+输出如下：
 ```bash
 {'train_samples': 7142, 'valid_samples': 5408, 'batch_size': 32}
 ```
@@ -547,7 +547,7 @@ label_map = {name: i for i, name in enumerate(train_dataset_raw.target_names)}
 train_losses, val_accuracies = trainer.train(epochs=hparams["epochs"], tokenizer=tokenizer, label_map=label_map)
 ```
 
-输出：
+输出如下：
 ```bash
 ...
 Epoch 14 [训练中]: 100%|██████████| 224/224 [00:00<00:00, 314.05it/s]
@@ -690,7 +690,7 @@ predicted_class = predictor.predict(new_text)
 {"text": new_text, "pred": predicted_class}
 ```
 
-输出：
+输出如下：
 ```bash
 {'text': "The doctor prescribed a new medicine for the patient's illness, focusing on its gpu accelerated healing properties.",
  'pred': 'sci.med'}
@@ -700,14 +700,14 @@ predicted_class = predictor.predict(new_text)
 
 刚刚构建的模型并没有考虑**过拟合（Overfitting）** 的问题，即模型在训练集上表现优异，但在未见过的验证集或测试集上表现不佳。下面简单介绍三个常用的方案：
 
-1. **提前停止（早停）**
-   - **思想**：在`Trainer`的`train`方法中，持续监控验证集的准确率（或损失）。如果发现验证集准确率连续N个轮次（N被称为“耐心值”，Patience）都没有超过历史最佳值，就提前终止训练。
-   - **实现**：可以在`Trainer`中增加一个`patience`参数和一个计数器来实现此逻辑。
+（1）**提前停止（早停）**
 
-2. **随机Token遮盖**
-   - **思想**：这是一种数据增强方法。在**训练过程**中，随机地将文本中的一部分词元（例如15%）替换为`<UNK>`。这迫使模型不能过度依赖个别“明星词汇”，而是要学习更全面的上下文语义来进行判断，从而提升模型的泛化能力。
-   - **实现**：这个修改可以在`TextClassificationDataset`类的`__getitem__`方法中，在返回数据前增加一个随机替换的步骤。注意，此操作只应在训练时进行。
+这种方法是在`Trainer`的`train`方法中，持续监控验证集的准确率（或损失）。如果发现验证集准确率连续N个轮次（N被称为“耐心值”，Patience）都没有超过历史最佳值，就提前终止训练。这可以在`Trainer`中增加一个`patience`参数和一个计数器来实现此逻辑。
 
-3. **Dropout**
-   - **思想**：在训练过程中，以一定的概率p随机地将神经网络中某些神经元的输出置为零。这可以防止神经元之间形成过于复杂的共适应关系，迫使网络学习到更鲁棒、更泛化的特征。
-   - **实现**：可以在 `TextClassifier` 模型的 `feature_extractor` 模块中，于 `nn.Linear` 层和 `nn.ReLU` 激活函数之后加入 `nn.Dropout(p)` 层。
+（2）**随机Token遮盖**
+
+这是一种数据增强方法，具体操作是在**训练过程**中，随机地将文本中的一部分词元（例如15%）替换为`<UNK>`。使得模型不能过度依赖个别“明星词汇”，而是要学习更全面的上下文语义来进行判断，继而提升模型的泛化能力。这个修改可以在`TextClassificationDataset`类的`__getitem__`方法中，在返回数据前增加一个随机替换的步骤。不过要注意，这个操作只应在训练时进行。
+
+（3）**Dropout**
+
+它的核心是在训练过程中，以一定的概率p随机地将神经网络中某些神经元的输出置为零。可以防止神经元之间形成过于复杂的共适应关系，迫使网络学习到更鲁棒、更泛化的特征。可以在 `TextClassifier` 模型的 `feature_extractor` 模块中，于 `nn.Linear` 层和 `nn.ReLU` 激活函数之后加入 `nn.Dropout(p)` 层。
