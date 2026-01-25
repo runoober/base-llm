@@ -194,7 +194,7 @@ GenerationConfig {
 > - 当 $T=0.5$（更小）：先除以 $0.5$ 得到 $[4,2,0]$，$e^4=54.598,e^2=7.389,e^0=1$，总和 $62.987$，概率约为 $[0.867,0.117,0.016]$，最大项更接近 1——分布更“尖”。
 > - 当 $T=2$（更大）：先除以 $2$ 得到 $[1,0.5,0]$，$e^1=2.718,e^{0.5}=1.649,e^0=1$，总和 $5.367$，概率约为 $[0.506,0.307,0.186]$，更平均——分布更“平”。
 
-（6）接着步过这次调用，我们就又回到了 `LogitsProcessorList` 类。然后重复刚才的步骤我们就来到了 `TopKLogitsWarper` 类的魔术方法：它会先用 `torch.topk(scores, top_k)[0][..., -1, None]` 取出“第 $k$ 大”的分数作为阈值，然后计算 `indices_to_remove = scores < threshold` 得到一个布尔 mask；步过后看到 `indices_to_remove` 里 **True 表示“需要被过滤掉”的 token（不在 top-k 里）**，False 表示保留；最后用 `scores.masked_fill(indices_to_remove, -inf)` 把这些 True 的位置统一置为 `-inf`，这样进入 softmax 后它们的概率就是 0，采样时永远不会被选到。类似地：
+（6）接着步过这次调用，我们就又回到了 `LogitsProcessorList` 类。然后重复刚才的步骤我们就来到了 `TopKLogitsWarper` 类的魔术方法。它会先用 `torch.topk(scores, top_k)[0][..., -1, None]` 取出“第 $k$ 大”的分数作为阈值，然后计算 `indices_to_remove = scores < threshold` 得到一个布尔 mask；步过后看到 `indices_to_remove` 里 **True 表示“需要被过滤掉”的 token（不在 top-k 里）**，False 表示保留；最后用 `scores.masked_fill(indices_to_remove, -inf)` 把这些 True 的位置统一置为 `-inf`，这样进入 softmax 后它们的概率就是 0，采样时永远不会被选到。类似地：
 
 - `top_p`（nucleus sampling）会按概率从高到低排序，只保留累计概率达到 $p$ 的最小 token 集合，其余置为 `-inf`；
 - `typical_p`（typical sampling）会按“局部典型性（local typicality）”来筛选 token，保留满足阈值的 token 集合（官方文档的表述是：local typicality 衡量“预测某个 token 的条件概率”与“从该分布随机抽一个 token 的期望条件概率”有多相似）；
