@@ -63,5 +63,5 @@
         - [威胁建模及风险分析](chapter16/02_threat_modeling_analysis.md)
 
 - **第六部分：多模态前沿**
-    - **第 1 章：多模态全景概述**
-        - [认识多模态边界](chapter19/01_multimodal_definition.md)
+    - **第 1 章：认识多模态边界**
+        - [多模态全景概述](chapter19/01_multimodal_definition.md)
