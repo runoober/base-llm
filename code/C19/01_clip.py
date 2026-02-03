@@ -6,7 +6,6 @@ import torchvision.transforms as transforms
 from torchvision.datasets import CIFAR10
 from transformers import GPT2Model, GPT2Tokenizer
 import timm
-import numpy as np
 
 # 1. 模型定义
 
@@ -60,7 +59,7 @@ class CLIP(nn.Module):
         self.text_encoder = TextEncoder(embed_dim)
 
         # 可学习温度系数（论文中用 log 参数化的 logit_scale）
-        self.logit_scale = nn.Parameter(torch.ones([]) * np.log(1 / 0.07))
+        self.logit_scale = nn.Parameter(torch.log(torch.tensor(1 / 0.07)))
 
     def forward(self, images, texts):
         img = self.image_encoder(images)  # (B, embed_dim)

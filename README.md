@@ -152,6 +152,8 @@
 ### 第六部分：多模态前沿
 - **第 1 章：认识多模态边界**
     - [x] [多模态概述](./docs/chapter19/01_multimodal_definition.md)
+    - [x] [图文多模态](./docs/chapter19/02_ViT_CLIP.md)
+
 
 ## 致谢
 

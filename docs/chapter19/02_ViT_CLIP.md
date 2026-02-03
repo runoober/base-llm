@@ -205,7 +205,7 @@ class CLIP(nn.Module):
 
 ### 3.3 数据准备
 
-为了演示，我们使用 CIFAR-10 数据集。由于 ViT 模型默认的输入分辨率是 224x224，而 CIFAR-10 的图片大小是 32x32，所以我们需要在预处理阶段将图片 **Resize** 到 224。
+为了演示，我们使用 CIFAR-10 数据集。由于 ViT 模型默认的输入分辨率是 224x224，而 CIFAR-10 的图片大小是 32x32，所以我们需要在预处理阶段将图片 **Resize** 到 224。同时，为了匹配预训练模型的输入分布，我们还需要使用模型特定的均值和方差（通过 `vit.default_cfg` 获取）对图像进行归一化处理。
 
 ```python
 def load_cifar10_dataset(batch_size, image_size=224, root='./cifar10', mean=None, std=None):
@@ -224,7 +224,7 @@ def load_cifar10_dataset(batch_size, image_size=224, root='./cifar10', mean=None
 
 ### 3.4 对比训练过程
 
-最后的**训练循环**需要遍历数据集以构造 Batch 数据，获取一批图像及其对应的类别名称作为文本。随后将这些图像和文本同时输入模型，生成 $N \times N$ 的相似度矩阵 `logits`。由于第 $i$ 张图对应的正是第 $i$ 个文本，所以监督信号就是对角线的“匹配位置索引”，即 `targets=[0, 1, ..., N-1]`。接下来，我们分别计算“图像找文本”（行方向，`CrossEntropyLoss(logits, targets)`）和“文本找图像”（列方向，`CrossEntropyLoss(logits.T, targets)`）的损失，并将两者取平均值作为最终的优化目标。
+最后的**训练循环**需要遍历数据集以构造 Batch 数据，获取一批图像及其对应的类别名称作为文本。随后将这些图像和文本同时输入模型，生成 $N \times N$ 的相似度矩阵 `logits`。由于第 $i$ 张图对应的正是第 $i$ 个文本，所以监督信号就是对角线的“匹配位置索引”，即 `targets=[0, 1, ..., N-1]`。接下来，我们分别计算“图像找文本”（行方向）和“文本找图像”（列方向）的损失，并将两者取平均值作为最终的优化目标。
 
 ```python
 if __name__ == "__main__":
