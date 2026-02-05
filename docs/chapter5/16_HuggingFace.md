@@ -345,8 +345,10 @@ trainer.train()
 
 ## 练习
 
+> 要做哦，别偷懒 😉
+
 - 尝试将之前实现的文本分类模型，从基于 `Word2Vec` 和 `LSTM` 的结构，迁移为使用 `BERT` 模型进行微调。对比分析两者在
-模型构建、训练流程以及最终性能上的异同。（可以参考[微调 BERT 模型进行文本分类](https://github.com/datawhalechina/base-nlp/blob/main/docs/chapter7/01_text_classification.md)）
+模型构建、训练流程以及最终性能上的异同。（可以参考[微调 BERT 模型进行文本分类](https://github.com/datawhalechina/base-llm/blob/main/docs/chapter7/03_bert_text_classification.md)）
 
 ---
 

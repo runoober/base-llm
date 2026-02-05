@@ -127,6 +127,8 @@ ViT 虽然实现了图像与文本在**底层架构**上的统一，但这仅仅
 
 ## 三、CLIP 代码实现
 
+> [本节完整代码](https://github.com/datawhalechina/base-llm/blob/main/docs/chapter19/02_clip.py)
+
 （1）**图像与文本编码器**
 
 理解了 CLIP 的原理后，我们尝试用 PyTorch 实现一个简化版的 CLIP 模型。**原始 CLIP 的两个编码器都是从零训练**，并且会进行 **L2 归一化 + 可学习温度（logit scale）缩放**，这里为了跑通流程与降低门槛，我们直接加载预训练的模型。第一步可以先构建**双塔结构**的两个编码器。首先是 **Image Encoder**，利用 `timm` 库可以非常方便地加载预训练的 ViT 模型。这里我们选择 `vit_small_patch16_224` 这个型号，其中 `patch16` 表示将图像切分为 $16 \times 16$ 的块，`224` 表示输入分辨率。同时开启 `pretrained=True` 让模型加载在 ImageNet 上预训练好的权重，让模型拥有基础的“看图”能力。由于 `timm` 的 ViT 默认带有用于分类的 head，为了得到我们需要的图像 embedding，会显式加一个投影层把视觉特征映射到目标 embedding 维度（这样不会误把随机初始化的分类 head 当作 embedding）。
