@@ -38,9 +38,9 @@ $$
 
 其中：
 
-- **$\mathbf{x}_{class}$**：特殊的分类 Token 向量。
-- **$\mathbf{x}_p^k\mathbf{E}$**：第 $k$ 个图像 Patch 经过线性投影后的嵌入向量。
-- **$\mathbf{E}_{pos}$**：与序列长度对应的位置编码，用于补充 Transformer 缺失的位置信息。
+- $\mathbf{x}_{class}$：特殊的分类 Token 向量。
+- $\mathbf{x}_p^k\mathbf{E}$：第 $k$ 个图像 Patch 经过线性投影后的嵌入向量。
+- $\mathbf{E}_{pos}$：与序列长度对应的位置编码，用于补充 Transformer 缺失的位置信息。
 
 
 ### 1.2 ViT 模型架构细节
