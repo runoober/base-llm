@@ -16,7 +16,7 @@ CLIP 通过对比学习让图像和文本在特征空间实现了对齐，但这
 
 ### 1.2 Q-Former 与两阶段预训练
 
-在原论文中，Q-Former（Querying Transformer）是一个初始化自 **BERT-base** 的轻量级 Transformer 模块（仅 **188M 参数**），核心目标是连接冻结的视觉与语言模型。如图 20-2，Q-Former 内部包含两个**共享 Self-Attention 层**的子模块。**左侧路径**（论文中称为 **Image Transformer**）接收一组固定数量的**可学习查询向量 (Learnable Queries)**（文中设定为 **32 个**）作为输入，通过每一层的 **Cross-Attention** 机制与冻结的图像编码器输出交互，从海量的视觉特征中“萃取”出最精华的视觉信息；**右侧路径**（论文中称为 **Text Transformer**）则作为文本编码器或解码器处理文本输入。这种双塔共享权重的设计，让 Queries 既能通过 Cross-Attention 学习视觉特征，又能通过共享的 Self-Attention 与文本特征进行交互。由于 32 个 Query 的数量远小于原始图像特征的空间尺寸，这种设计强制模型进行高强度的信息压缩，构成了所谓的“**信息瓶颈 (Information Bottleneck)**”，确保传递给 LLM 的都是经过筛选的、与文本最相关的有效信息。
+在原论文中，Q-Former（Querying Transformer）是一个初始化自 **BERT-base** 的轻量级 Transformer 模块（仅 **188M 参数**），核心目标是连接冻结的视觉与语言模型。如图 20-2，Q-Former 内部包含两个**共享 Self-Attention 层**的子模块。**左侧路径**（论文中称为 **Image Transformer**）接收一组固定数量的**可学习查询向量 (Learnable Queries)**（文中设定为 **32 个**）作为输入，通过每一层的 **Cross-Attention** 机制与冻结的图像编码器输出交互，从海量的视觉特征中“萃取”出最精华的视觉信息；**右侧路径**（论文中称为 **Text Transformer**）则作为文本编码器或解码器处理文本输入。这种双塔共享权重的设计，让 Queries 既能通过 Cross-Attention 学习视觉特征，又能通过共享的 Self-Attention 与文本特征进行交互。由于 32 个 Query 的数量远小于原始图像特征的空间尺寸，这种设计强制模型进行高强度的信息压缩，构成了所谓的“**信息瓶颈**”，确保传递给 LLM 的都是经过筛选的、与文本最相关的有效信息。
 
 <p align="center">
   <img src="./images/20_1_2.png" width="90%" alt="Q-Former 架构" />
