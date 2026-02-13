@@ -66,6 +66,6 @@
     - **第 1 章：认识多模态边界**
         - [多模态全景概述](chapter19/01_multimodal_definition.md)
         - [图文多模态](chapter19/02_ViT_CLIP.md)
-    - **第 2 章：从感知到生成**
-        
-        
+    - **第 2 章：视觉问答**
+        - [BLIP-2 与 LLaVA](chapter20/01_blip2_llava.md)
+        - [原生统一架构](chapter20/02_native_unified.md)
