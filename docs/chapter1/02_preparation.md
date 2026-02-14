@@ -168,13 +168,13 @@ conda activate base-llm
 （2）激活 `base-llm` 环境后，可以先安装一些常用的第三方库，这些库涵盖了大部分数据处理与可视化需求。
 
 ```bash
-pip install numpy pandas matplotlib scikit-learn jupyter -y
+pip install numpy pandas matplotlib scikit-learn jupyter
 ```
 
 （3）本项目的代码主要基于 PyTorch，如果当前设备只有 CPU，可以使用下面命令直接安装：
     
 ```bash
-pip install torch torchvision torchaudio -y
+pip install torch torchvision torchaudio
 ```
 
 （4）如果设备中有 GPU，并希望使用 CUDA，通过 `nvcc --version` 查看完 cuda 版本后可以参考 [PyTorch 官网](https://pytorch.org/get-started/locally/)的安装指令，选择与设备和显卡驱动匹配的 CUDA 版本。
