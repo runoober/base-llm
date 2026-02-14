@@ -1,89 +1,57 @@
 # 第四节 Hugging Face 生态与核心库
 
-我们在前面的学习中简单尝试了 BERT、GPT 和 T5 三大模型的应用。可以发现，无论使用哪种架构，都离不开一个核心工具库——**Hugging Face Transformers**。
-
-如今，Hugging Face 已经从一家 NLP 初创公司演变为 **AI 时代的基础设施**。它构建了一个涵盖模型开发全生命周期的完整生态系统——从数据获取、模型开发、训练微调到最终的评估与部署。本节将深入剖析 Hugging Face 的生态构成，并以 **Transformers** 库为核心，结合 **Datasets** 和 **Tokenizers**，展示现代化模型开发链路。
+我们在前面的学习中简单尝试了 BERT、GPT 和 T5 三大模型的应用。可以发现，无论使用哪种架构，都离不开一个核心工具库——**Hugging Face Transformers**。如今，Hugging Face 已经从一家 NLP 初创公司演变为 **AI 时代的基础设施**。它构建了一个涵盖模型开发全生命周期的完整生态系统——从数据获取、模型开发、训练微调到最终的评估与部署。本节将深入剖析 Hugging Face 的生态构成，并以 **Transformers** 库为核心，结合 **Datasets** 和 **Tokenizers**，展示现代化模型开发链路。
 
 [本节完整代码](https://github.com/datawhalechina/base-nlp/blob/main/code/C5/04_hf_usage.ipynb)
 
 ## 一、Hugging Face 生态全景
 
-Hugging Face 的生态系统可以看作是由**核心软件库**、**协作平台**和**辅助工具** 共同构成的有机整体。
+Hugging Face 的生态系统可以看作是由**核心软件库**、**协作平台**和**辅助工具** 共同构成的有机整体。如果说 GitHub 是代码的托管中心，那么 **Hugging Face Hub** 就是 **AI 领域的 GitHub**，它是一个集成了模型、数据集和应用演示的中央枢纽，支持 Git 版本控制。其中 **Models（模型库）** 托管了数十万个预训练模型，涵盖 NLP、CV、Audio 等多模态领域，用户可以下载、使用甚至在线体验模型效果。**Datasets（数据集）** 托管各类公开数据集，支持数据预览和高效的流式传输。**Spaces（演示空间）** 允许开发者使用 **Gradio**、**Streamlit** 或 **Docker** 快速构建 Web 应用，在线展示模型效果。
 
 <div align="center">
   <img src="images/5_4_1.png" width="90%" alt="Hugging Face 官网" />
   <p>图 5-7 Hugging Face 官网</p>
 </div>
 
-### 1.1 Hugging Face Hub
-
-如果说 GitHub 是代码的托管中心，那么 **Hugging Face Hub** 就是 **AI 领域的 GitHub**。它是一个集成了模型、数据集和应用演示的中央枢纽，支持 Git 版本控制：
-
-*   **Models（模型库）**：托管了数十万个预训练模型，涵盖 NLP、CV、Audio 等多模态领域。用户可以下载、使用甚至在线体验模型效果。
-*   **Datasets（数据集）**：托管各类公开数据集。支持数据预览和高效的流式传输。
-*   **Spaces（演示空间）**：允许开发者使用 **Gradio**、**Streamlit** 或 **Docker** 快速构建 Web 应用，在线展示模型效果。
-
-### 1.2 核心软件库的“三驾马车”
-
-在开发层面，以下三个开源库构成了生态系统的技术基石：
-
-1.  **Transformers**: 生态系统的引擎。提供统一的 API 来下载、加载和使用预训练模型 [^1]。
-2.  **Tokenizers**: 连接文本与模型的桥梁。底层由 **Rust** 编写，提供极致的文本处理速度（Fast Tokenizers），并与 Transformers 无缝集成 [^2]。
-3.  **Datasets**: 数据处理的加速器。提供标准化的接口来加载、处理和管理大型数据集，内置高效的内存映射机制 [^3]。
-
-### 1.3 辅助工具
-
-为了应对更复杂的开发需求，生态中还包含了一系列强大的辅助库：
-
-*   **Accelerate**: 简化分布式训练。让同一套代码可以无缝运行在 CPU、单卡 GPU、多卡 GPU 甚至 TPU 上，无需手动处理复杂的分布式逻辑。
-*   **Evaluate**: 标准化的模型评估框架。提供数十种常用的评估指标（如 Accuracy, F1, BLEU, ROUGE） [^4]。
-*   **Diffusers**: 专注于生成式 AI（如 Stable Diffusion）的库。
-*   **PEFT**: 参数高效微调库（Parameter-Efficient Fine-Tuning），支持 LoRA 等前沿微调技术。
+在开发层面，**Transformers**、**Tokenizers** 和 **Datasets** 这三个开源库构成了生态系统的技术基石。**Transformers** 被视为生态系统的引擎，提供了统一的 API 来下载、加载和使用预训练模型 [^1]。**Tokenizers** 则是连接文本与模型的桥梁，它的底层由 **Rust** 编写，提供极致的文本处理速度（Fast Tokenizers），并与 Transformers 无缝集成 [^2]。**Datasets** 作为数据处理的加速器，提供了标准化的接口来加载、处理和管理大型数据集，并内置高效的内存映射机制 [^3]。为了应对更复杂的开发需求，生态中还包含了一系列强大的辅助库，例如 **Accelerate** 用于简化分布式训练，让同一套代码可以无缝运行在 CPU、单卡 GPU、多卡 GPU 甚至 TPU 上，无需手动处理复杂的分布式逻辑；**Evaluate** 是标准化的模型评估框架，提供数十种常用的评估指标（如 Accuracy, F1, BLEU, ROUGE） [^4]；**Diffusers** 是专注于生成式 AI（如 Stable Diffusion）的库；而 **PEFT** 则是参数高效微调库（Parameter-Efficient Fine-Tuning），支持 LoRA 等前沿微调技术。
 
 ## 二、Transformers 核心库详解
 
 ### 2.1 开箱即用的 Pipeline
 
-对于刚接触 AI 的开发者，或者只想快速验证某个想法，**Pipeline** 是最高效的工具。它将**预处理 -> 模型推理 -> 后处理**这一复杂的全流程封装成了一个黑盒。
+对于刚接触 AI 的开发者，或者只想快速验证某个想法，**Pipeline** 是最高效的工具。它将**预处理 -> 模型推理 -> 后处理**这一复杂的全流程封装成了一个黑盒。它的使用场景非常广泛，以下面两个为例：
 
-*   **NLP 任务**：
-    在前面的 GPT 实战中，我们曾显式指定模型（`model="gpt2"`）来完成文本生成。同时，Pipeline 还拥有强大的“自动导航”能力——**无需指定模型，只需指定任务**。
+（1）**NLP 任务**：在前面的 GPT 实战中，我们曾显式指定模型（`model="gpt2"`）来完成文本生成。同时，Pipeline 还拥有强大的“自动导航”能力，它**无需指定模型，只需指定任务**。当指定一个任务类型（如 `sentiment-analysis`）时，Pipeline 会自动从 Hub 上下载并加载该任务对应的**默认预训练模型**。
 
-    当指定一个任务类型（如 `sentiment-analysis`）时，Pipeline 会自动从 Hub 上下载并加载该任务对应的**默认预训练模型**。
-    ```python
-    from transformers import pipeline
+```python
+from transformers import pipeline
 
-    # 情感分析（默认下载英文模型）
-    classifier = pipeline("sentiment-analysis")
-    result = classifier("I love Hugging Face!")
-    result
-    ```
-    > 默认模型通常为英文，中文任务建议显式指定中文模型（如 `model="bert-base-chinese"`）。*
+# 情感分析（默认下载英文模型）
+classifier = pipeline("sentiment-analysis")
+result = classifier("I love Hugging Face!")
+result
+```
+> 默认模型通常为英文，中文任务建议显式指定中文模型（如 `model="bert-base-chinese"`）。*
 
-*   **跨模态能力**：
-    Transformers 早已突破 NLP 边界，支持 CV 和 Audio 等多个领域。
-    ```python
-    # 图像分类示例（显式指定小模型 apple/mobilevit-small）
-    # pip install pillow
-    vision_classifier = pipeline(model="apple/mobilevit-small")
-    result = vision_classifier("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/coco_sample.png")
-    result
-    ```
+（2）**跨模态能力**：Transformers 早已突破 NLP 边界，支持 CV 和 Audio 等多个领域。
+
+```python
+# 图像分类示例（显式指定小模型 apple/mobilevit-small）
+# pip install pillow
+vision_classifier = pipeline(model="apple/mobilevit-small")
+result = vision_classifier("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/coco_sample.png")
+result
+```
 
 ### 2.2 AutoClass：智能加载机制
 
-当深入定制模型时，我们需要手动加载模型。**`AutoClass`**（如 `AutoTokenizer`, `AutoModel`, `AutoConfig`）是库设计的精髓。
-
-它的作用是**根据 Checkpoint 名称，自动推断并加载正确的模型架构**。例如，调用 `AutoModel.from_pretrained("bert-base-chinese")` 时，库会自动识别这是 BERT 架构，并实例化 `BertModel` 类。
-
-*   **`from_pretrained`**: 加载接口。既支持从 Hub 在线下载，也支持从本地目录加载。
-*   **`save_pretrained`**: 保存接口。将模型权重、配置和词表保存到本地。
+当深入定制模型时，我们需要手动加载模型。**`AutoClass`**（如 `AutoTokenizer`, `AutoModel`, `AutoConfig`）是库设计的精髓。它的作用是**根据 Checkpoint 名称，自动推断并加载正确的模型架构**。例如，调用 `AutoModel.from_pretrained("bert-base-chinese")` 时，库会自动识别这是 BERT 架构，并实例化 `BertModel` 类。其中，**`from_pretrained`** 是加载接口，既支持从 Hub 在线下载，也支持从本地目录加载.而 **`save_pretrained`** 则是保存接口，可将模型权重、配置和词表保存到本地。
 
 ### 2.3 核心组件拆解
 
 Transformers 的处理流程主要包含三个核心阶段。我们将结合代码演示，分析每个阶段的职责与实现：
 
-1. **Tokenizer（分词）**
+（1）**Tokenizer（分词）**
 
 ```python
 import torch
@@ -116,7 +84,7 @@ tensor([[ 101,  100,  100, 6375,  100, 1359, 2533, 5042, 1296,  102]])
 *   `1296`: "单"
 > 由于 bert-base-chinese 词表未包含英文单词 `Hugging`、`Face`、`NLP`，它们都会被映射为 `[UNK]`。
 
-2. **Model（模型）**
+（2）**Model（模型）**
 
 ```python
 # 2. Model: Tensor -> Logits
@@ -190,10 +158,7 @@ DatasetDict({
 
 ### 3.2 并行的预处理
 
-`map` 是 `datasets` 最强大的功能。它允许你将预处理函数（如 Tokenizer）应用到数据集的每一个样本上。
-
-*   **批处理 (`batched=True`)**：一次处理一批数据，充分利用 Tokenizer 的多线程优势。
-*   **多进程 (`num_proc=N`)**：并行处理，显著加快大数据集的预处理速度。
+`map` 是 `datasets` 最强大的功能，它允许我们将预处理函数（如 Tokenizer）应用到数据集的每一个样本上。例如，通过设置 `batched=True` 开启批处理，可以一次处理一批数据，充分利用 Tokenizer 的多线程优势。通过设置 `num_proc=N` 开启多进程并行处理，则能显著加快大数据集的预处理速度。
 
 ```python
 def tokenize_function(examples):
@@ -209,7 +174,9 @@ def tokenize_function(examples):
 
 数据准备就绪后，`transformers` 提供了 `Trainer` API，这是一个高度封装的训练框架。虽然可以手写 PyTorch 循环，但 `Trainer` 集成了大量工程化特性（如混合精度、梯度累积、分布式训练支持），且底层自动调用 `Accelerate` 库。使用 Trainer 通常遵循“三步走”：
 
-1. **准备组件**
+（1）**准备组件**
+
+第一步我们需要先实例化 Model、Dataset 和 Tokenizer 等核心组件。
 
 ```python
 from transformers import TrainingArguments, Trainer, AutoModelForSequenceClassification, AutoTokenizer
@@ -232,9 +199,10 @@ model = AutoModelForSequenceClassification.from_pretrained("distilbert-base-unca
 model
 ```
 
-可以看到第一步我们实例化了 Model、Dataset 和 Tokenizer 等核心组件。
+打印模型对象可以看到其完整的网络结构。注意最后的 `classifier` 层，其 `out_features=2` 对应我们在加载时设置的 `num_labels=2`，这表明模型已经被正确初始化为二分类任务。
 
-输出：
+输出如下：
+
 ```bash
 DistilBertForSequenceClassification(
   (distilbert): DistilBertModel(
@@ -269,9 +237,9 @@ DistilBertForSequenceClassification(
 )
 ```
 
-打印模型对象可以看到其完整的网络结构。注意最后的 `classifier` 层，其 `out_features=2` 对应我们在加载时设置的 `num_labels=2`，这表明模型已经被正确初始化为二分类任务。
+（2）**配置参数**
 
-2. **配置参数**
+使用 `TrainingArguments` 定义超参数（Batch Size, LR, Epoch, 保存策略等）。
 
 ```python
 # 2. 配置参数
@@ -282,9 +250,9 @@ training_args = TrainingArguments(
 )
 ```
 
-使用 `TrainingArguments` 定义超参数（Batch Size, LR, Epoch, 保存策略等）。
+（3）**启动训练**
 
-3. **启动训练**
+最后，实例化 `Trainer` 并调用 `train()` 即可开启训练流程。
 
 ```python
 # 3. 实例化 Trainer 并启动训练
@@ -297,14 +265,9 @@ trainer = Trainer(
 trainer.train()
 ```
 
-实例化 `Trainer` 并调用 `train()` 即可开启训练流程。
-
 ### 4.2 Evaluate 性能评估
 
-`evaluate` 库用于计算 Metrics（指标），如 Accuracy、F1-score。它与 Trainer 无缝集成：
-*   定义一个 `compute_metrics` 函数。
-*   将其传入 `Trainer`。
-*   在训练过程中，Trainer 会自动调用该函数评估模型在验证集上的表现。
+`evaluate` 库用于计算 Metrics（指标），如 Accuracy、F1-score。它与 Trainer 无缝集成，只需定义一个 `compute_metrics` 函数并将其传入 `Trainer`，在训练过程中，Trainer 就会自动调用该函数评估模型在验证集上的表现。
 
 ```python
 import numpy as np
