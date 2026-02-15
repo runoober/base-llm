@@ -208,7 +208,7 @@ GenerationConfig {
 > 因此 `top_k` 越小，越容易反复选到高分 token，输出更稳定，但也更容易变得模板化/重复；`top_p` 越小，也会更早截断到一小撮高概率 token，候选更少。
 > 实际应用中 `temperature` 和 `top_p` 是“分工明确”的一对。`temperature` 把分布变尖/变平（决定“随机性强弱”），`top_p` 就是把低概率尾巴裁掉（决定“从哪些 token 里抽”）。`top_p` 和 `top_k` 没什么联动，如果同时开启，相当于是双重过滤，最后能被采样的 token 会落在“满足 top_k 的集合”和“满足 top_p 的集合”的交集里。
 
-（7）继续步过，我们就跳出了 `logits_processor(...)`，而这个时候的 `next_token_scores` 就是被规则链修正后的 `logits`。接着继续步过，如图 6-29，经过 softmax 和按 `probs` 的概率分布随机抽样后我们就得到了第一个预测 token “**479**”。打开模型的 `vocab.json` 文件，检索一下可以看到这个词是 “**\u0120food**”，“**\u0120**”其实就是我们在学习 GPT 的过程中学习过的“**Ġ**”，这个前缀表示一个词的开始。那么本次推理的第一个单词显然就是 “**food**”。继续步过，下面这行 `if has_eos_stopping_criteria:` 就是判断某条序列是否已经“结束了”，如果结束了就把它后续每一步的 next_token 设成 pad_token_id，避免它继续生成乱七八糟的 token，同时保持 batch 里所有序列长度一致。
+（7）继续步过，我们就跳出了 `logits_processor(...)`，而这个时候的 `next_token_scores` 就是被规则链修正后的 `logits`。接着步过，如图 6-29，经过 softmax 和按 `probs` 的概率分布随机抽样后我们就得到了第一个预测 token “**2057**”。打开模型的 `vocab.json` 文件，检索一下可以看到这个词是 “**\u0120food**”，“**\u0120**”其实就是我们在学习 GPT 的过程中学习过的“**Ġ**”，这个前缀表示一个词的开始。那么本次推理的第一个单词显然就是 “**food**”。继续步过，下面这行 `if has_eos_stopping_criteria:` 就是判断某条序列是否已经“结束了”，如果结束了就把它后续每一步的 next_token 设成 pad_token_id，避免它继续生成乱七八糟的 token，同时保持 batch 里所有序列长度一致。
 
 <p align="center">
   <img src="./images/6_3_14.png" width="90%" alt="第一个预测 token" />

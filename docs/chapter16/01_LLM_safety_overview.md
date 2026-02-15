@@ -166,7 +166,7 @@ OWASP LLM Top 10 也建议在接口层面显式标注“可被模型访问的外
 不过，传统的基于文本重合度的指标（如 BLEU、ROUGE）已无法有效评估大模型生成的语义安全性和真实性（**Eval Problem**）。如图 16-5 所示，在“人类使用了多少大脑”这一问题上，GPT-4 和 Bard 给出了事实正确且详尽的回答，但这些回答与简短的标准答案在文本重合度上极低，导致 BLEU/ROUGE 得分很低。这种“答对了但得分低”的现象，直观地说明了传统 NLP 评估指标在长文本生成和复杂推理场景下的失效。
 
 <p align="center">
-  <img src="./images/16_1_4.png" width="90%" alt="传统评估指标在 LLM 场景下的失效（Eval Problem）" />
+  <img src="./images/16_1_5.png" width="90%" alt="传统评估指标在 LLM 场景下的失效（Eval Problem）" />
   <br />
   <em>图 16-5 传统评估指标在 LLM 场景下的失效（Eval Problem）</em>
 </p>
