@@ -140,12 +140,17 @@
     - [x] [搭建 Jenkins CI/CD 自动化部署流水线](./chapter15/02_Jenkins.md)
 
 ### 第五部分：大模型安全
+- **第 1 章：安全全景与威胁建模**
+    - [x] [大模型安全总览](./docs/chapter16/01_LLM_safety_overview.md)
+    - [x] [威胁建模及风险分析](./docs/chapter16/02_threat_modeling_analysis.md)
+
 ### 第六部分：多模态前沿
 - **第 1 章：认识多模态边界**
     - [x] [多模态概述](./chapter19/01_multimodal_definition.md)
     - [x] [图文多模态](./chapter19/02_ViT_CLIP.md)
 - **第 2 章：视觉问答**
     - [x] [BLIP-2 与 LLaVA](./chapter20/01_blip2_llava.md)
+    - [x] [原生统一架构](./chapter20/02_unified_architecture.md)
 
 
 ## 致谢

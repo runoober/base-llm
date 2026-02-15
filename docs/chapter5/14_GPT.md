@@ -322,9 +322,9 @@ GPT2LMHeadModel(
 )
 ```
 
-可以看到，整个 `GPT2LMHeadModel` 由两大部分组成：`transformer` 主体 (即 `GPT2Model`)，和顶层的 `lm_head` (语言模型头)。
+可以看到，整个 `GPT2LMHeadModel` 由两大部分组成，分别是`transformer` 主体 (即 `GPT2Model`)，和顶层的 `lm_head` (语言模型头)。下面分别进行介绍：
 
-（1）**`transformer` (GPT2Model)**: 这是模型的主体，负责从输入 token ID 序列中提取深层特征。
+（1）**`transformer` (GPT2Model)**: 这是模型的主体，负责从输入 token ID 序列中提取深层特征。它主要包含以下两个部分：
 
 - **嵌入层 (Embeddings)**: `(wte): Embedding(50257, 768)` 代表**词元嵌入 (Word Token Embedding)**，其中 `50257` 为 GPT-2 的词汇表大小，`768` 为隐藏层维度 H。`(wpe): Embedding(1024, 768)` 则代表**位置嵌入 (Word Position Embedding)**，这是一种可学习的嵌入，其维度决定了标准 GPT-2 模型的最大输入长度为 1024。与 BERT 相比，GPT 没有包含片段嵌入（`token_type_embeddings`），具体原因已在前文阐述。
 
@@ -350,7 +350,7 @@ tokens = tokenizer.tokenize(text)
 print(tokens)
 ```
 
-然而，这种机制也存在**对非核心语言效率低**的缺点。`gpt2` 的 BPE 词汇表是为英文构建的，**不包含任何独立的中文词语作为 token**。虽然它的字节级机制能表示任意汉字，但它会将这些汉字拆分成多个基础的字节 token，导致一个汉字通常会被拆分成 2-3 个字节级别的 token。不仅增加了序列的长度，也让模型学习中文语义变得更加困难。如代码示例所示，英文提示词被编码为 10 个 token，而几乎同样长度的中文提示词则被编码为了 19 个 token，极大地消耗了模型的上下文长度预算。
+不过，这种机制也存在**对非核心语言效率低**的缺点。`gpt2` 的 BPE 词汇表是为英文构建的，**不包含任何独立的中文词语作为 token**。虽然它的字节级机制能表示任意汉字，但它会将这些汉字拆分成多个基础的字节 token，导致一个汉字通常会被拆分成 2-3 个字节级别的 token。不仅增加了序列的长度，也让模型学习中文语义变得更加困难。如代码示例所示，英文提示词被编码为 10 个 token，而几乎同样长度的中文提示词则被编码为了 19 个 token，极大地消耗了模型的上下文长度预算。
 
 > **为什么 `gpt2` 模型生成中文会是乱码？**
 >
@@ -374,7 +374,7 @@ pipeline_outputs = generator("I like eating fried", max_new_tokens=5, num_return
 print(pipeline_outputs[0]['generated_text'])
 ```
 
-其中 `pipeline("text-generation", ...)` 创建了一个专门用于文本生成的 `pipeline` 对象，它自动处理了分词、模型推理和解码的所有细节。而 `generator(...)` 仅用一行代码就完成了我们之前手动循环实现的全部功能，它的输出结果与我们手动实现的英文生成结果是一致的，证明 `pipeline` 是在底层执行了相似的逻辑，但为开发者提供了极其便利的接口。
+通过代码可以看到，`pipeline("text-generation", ...)` 创建了一个专门用于文本生成的 `pipeline` 对象，它自动处理了分词、模型推理和解码的所有细节。而 `generator(...)` 仅用一行代码就完成了我们之前手动循环实现的全部功能，它的输出结果与我们手动实现的英文生成结果是一致的，证明 `pipeline` 是在底层执行了相似的逻辑，但为开发者提供了极其便利的接口。
 
 ---
 
