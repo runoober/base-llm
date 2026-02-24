@@ -23,6 +23,7 @@
         - [手搓一个大模型](chapter6/17_handcraft_llama2.md)
         - [MoE 架构解析](chapter6/18_MoE.md)
         - [手撕大模型生成策略](chapter6/19_text_generation.md)
+        - [上下文学习与提示词技术](chapter6/20_in_context_learning.md)
 
 - **第二部分：实战篇**
     - **第 1 章：文本分类**
@@ -61,6 +62,8 @@
     - **第 1 章：安全全景与威胁建模**
         - [大模型安全总览](chapter16/01_LLM_safety_overview.md)
         - [威胁建模及风险分析](chapter16/02_threat_modeling_analysis.md)
+    - **第 2 章：安全工程：对齐与架构设计**
+
 
 - **第六部分：多模态前沿**
     - **第 1 章：认识多模态边界**
