@@ -33,7 +33,7 @@ CLIP 通过对比学习让图像和文本在特征空间实现了对齐，但这
 <p align="center">
   <img src="./images/20_1_3.png" width="70%" alt="第一阶段预训练目标" />
   <br />
-  <em>图 20-3 第一阶段预训练目标 (a) ITC, (b) ITG, (c) ITM</em>
+  <em>图 20-3 第一阶段预训练目标 (a) ITM, (b) ITG, (c) ITC</em>
 </p>
 
 > **Mask 图解说明**：每个方形矩阵代表 Transformer 的注意力掩码（Attention Mask），横纵坐标分别对应 Query 和 Text 的 Token。矩阵被分为**四个象限**，**左上**是 Query 对自身的注意力（Q-Q），**右下**是 Text 对自身的注意力（T-T），**右上**和**左下**则是 Query 与 Text 之间的交叉注意力（Q-T 和 T-Q）。**空白区域表示“可见”**（unmasked），**深色区域表示“不可见”**（Masked）。例如在 ITC 任务中，我们希望 Query 和 Text **互不可见**，对应的右上和左下象限就是**深色**的。
