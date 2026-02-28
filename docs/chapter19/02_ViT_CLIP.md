@@ -25,7 +25,7 @@ $$
 （3）**位置编码（保留空间信息，见图 19-5 紫色标号圆圈）**：给序列加上可学习的 1D 位置编码 $\mathbf{E}_{pos}\in\mathbb{R}^{(N+1)\times D}$。
 
 <p align="center">
-  <img src="./images/19_1_5.png" width="80%" alt="ViT 架构概览" />
+  <img src="./images/19_2_1.png" width="80%" alt="ViT 架构概览" />
   <br />
   <em>图 19-5 ViT 架构概览（左侧为 Patch Embedding 流程，右侧为 Transformer Encoder 内部结构）</em>
 </p>
@@ -88,7 +88,7 @@ ViT 虽然实现了图像与文本在**底层架构**上的统一，但这仅仅
 为了实现上述目标，CLIP 采用了经典的**双塔结构**，但在具体设计上不仅追求特征的表达能力，更注重大规模训练的效率。对于负责将图像编码为特征向量的**图像编码器（Image Encoder）**，OpenAI 探索了经过改进的 ResNet 和 ViT 两种架构。ResNet 版本在 ResNet-50 的基础上引入了 **ResNet-D** 的改进，并采用**抗混叠下采样（anti-aliased downsampling）**来减少下采样带来的信息折叠；同时将末端的**全局平均池化**替换为**注意力池化**，以更好地聚合全局特征。ViT 版本则基本遵循原始 ViT 的实现，只做了很小的改动。仅在 **patch embedding 和 position embedding** 相加后、进入 Transformer 之前增加一个额外的 **LayerNorm**，并使用了稍微不同的初始化方案以提升训练稳定性。如图 19-6 所示，实验表明在同样的计算预算下，ViT 架构在相近计算预算下整体表现更优。论文也指出 **CLIP 的 ViT 系列在计算效率上大约比 CLIP ResNet 系列高 3 倍**。而对于负责将文本编码为特征向量的**文本编码器（Text Encoder）**，CLIP 选用了类似 GPT-2 的 **Decoder-only Transformer** 架构而非 BERT，通过**自注意力掩码**确保模型在编码当前词时仅能关注之前的词。文本序列以 `[SOS]` 标记开始，以 `[EOS]` 标记结束。经过 Transformer 编码后，每个词位置都会产生对应的特征向量，但 CLIP 只取最后一层 Transformer 在 `[EOS]` 标记位置的特征向量作为整句话的语义表示。这是因为 `[EOS]` 位置的特征通过自注意力机制已经聚合了整个句子的信息，能够代表整句话的语义。
 
 <p align="center">
-  <img src="./images/19_1_6.png" width="80%" alt="CLIP 图像编码器计算效率对比" />
+  <img src="./images/19_2_2.png" width="80%" alt="CLIP 图像编码器计算效率对比" />
   <br />
   <em>图 19-6 CLIP 图像编码器计算效率对比：ViT vs ResNet</em>
 </p>
@@ -100,7 +100,7 @@ ViT 虽然实现了图像与文本在**底层架构**上的统一，但这仅仅
 如图 19-7 所示，**对比学习（Contrastive Learning）**是 CLIP 的核心训练策略，它为双塔结构注入了“灵魂”，真正实现了**让图像和文本在同一个 Embedding 空间中实现语义对齐**。
 
 <p align="center">
-  <img src="./images/19_1_7.png" width="80%" alt="CLIP 对比预训练" />
+  <img src="./images/19_2_3.png" width="80%" alt="CLIP 对比预训练" />
   <br />
   <em>图 19-7 CLIP 的对比预训练过程</em>
 </p>
@@ -114,7 +114,7 @@ ViT 虽然实现了图像与文本在**底层架构**上的统一，但这仅仅
 为了让模型更好地理解类别名称，CLIP 还引入了**提示工程**的概念。当我们需要识别一张图像是否属于某个类别（例如“狗”）时，不再是让模型输出一个类别 ID，而是让模型去判断这张图与句子“一张狗的照片”之间的相似度（如图 19-8 所示）。由于训练数据多为句子而非单词，直接输入单词往往会造成歧义（例如论文中提到的 “boxer”，既可能是“拳师犬”，也可能是“拳击手”），且与预训练数据的分布存在差异。所以，我们可以将类别标签填入一个模板句子，如 **"A photo of a {label}."**。在推理时，模型会将所有候选类别（如猫、狗、飞机）都填入模板，生成一组文本向量，然后找出与当前图像向量相似度最高的那句话，从而确定图像的类别。这种范式使得 CLIP 无需任何微调，就能直接迁移到任意的视觉分类任务中，成为一个真正的“开放词汇”分类器。
 
 <p align="center">
-  <img src="./images/19_1_8.png" width="80%" alt="CLIP Zero-Shot 推理" />
+  <img src="./images/19_2_4.png" width="80%" alt="CLIP Zero-Shot 推理" />
   <br />
   <em>图 19-8 CLIP 的 Zero-Shot 推理过程</em>
 </p>
