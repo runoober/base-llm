@@ -8,11 +8,11 @@
 
 LLaMA-Factory 是一个简洁高效的大型语言模型（Large Language Model）训练与微调平台，旨在让开发者能够“零代码”地完成大模型的定制化训练。它具有以下特点：
 
-*   **广泛的模型支持**：支持业界主流的开源模型，如 LLaMA、Qwen（通义千问）、Baichuan（百川）、ChatGLM、Mistral、Yi 等。
-*   **全流程覆盖**：涵盖了从 **预训练（Pre-Training）**、**指令监督微调（SFT）** 到 **RLHF**（包含奖励模型建模、PPO、DPO、KTO、ORPO 等）的完整训练阶段。
-*   **高效的微调技术**：内置了 LoRA、QLoRA、DoRA、GaLore 等多种参数高效微调（PEFT）方法，大幅降低了显存需求。
-*   **易用的交互界面**：提供名为 **LLaMA-Board** 的 Web UI 界面，通过可视化操作即可配置训练参数、监控训练进度以及进行模型对话测试。
-*   **硬件友好**：支持 DeepSpeed、FlashAttention 等加速技术，并支持 4-bit/8-bit 量化训练，使得普通消费级显卡也能运行大模型训练。
+- **广泛的模型支持**：支持业界主流的开源模型，如 LLaMA、Qwen（通义千问）、Baichuan（百川）、ChatGLM、Mistral、Yi 等。
+- **全流程覆盖**：涵盖了从 **预训练（Pre-Training）**、**指令监督微调（SFT）** 到 **RLHF**（包含奖励模型建模、PPO、DPO、KTO、ORPO 等）的完整训练阶段。
+- **高效的微调技术**：内置了 LoRA、QLoRA、DoRA、GaLore 等多种参数高效微调（PEFT）方法，大幅降低了显存需求。
+- **易用的交互界面**：提供名为 **LLaMA-Board** 的 Web UI 界面，通过可视化操作即可配置训练参数、监控训练进度以及进行模型对话测试。
+- **硬件友好**：支持 DeepSpeed、FlashAttention 等加速技术，并支持 4-bit/8-bit 量化训练，使得普通消费级显卡也能运行大模型训练。
 
 ## 二、环境搭建
 

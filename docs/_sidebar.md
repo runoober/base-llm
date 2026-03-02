@@ -58,12 +58,12 @@
         - [Git 与 GitHub 版本控制基础](chapter15/01_Git.md)
         - [搭建 Jenkins CI/CD 自动化部署流水线](chapter15/02_Jenkins.md)
 
+
 - **第五部分：大模型安全**
     - **第 1 章：安全全景与威胁建模**
         - [大模型安全总览](chapter16/01_LLM_safety_overview.md)
         - [威胁建模及风险分析](chapter16/02_threat_modeling_analysis.md)
     - **第 2 章：安全工程：对齐与架构设计**
-
 
 - **第六部分：多模态前沿**
     - **第 1 章：认识多模态边界**
@@ -72,3 +72,4 @@
     - **第 2 章：视觉问答**
         - [BLIP-2 与 LLaVA](chapter20/01_blip2_llava.md)
         - [原生统一架构](chapter20/02_native_unified.md)
+        - [从 0 训练简化版 Omni 模型](chapter20/03_simplified_omni.md)
