@@ -1,4 +1,4 @@
-# 第四节 基于Gensim的词向量实战
+# 第四节 基于 Gensim 的词向量实战
 
 前面已经学习了多种词向量表示，接下来我们尝试将这些理论转化为可运行的代码。本节将使用 **Gensim** 进行实践，通过简洁的代码示例来应用前几章介绍的算法，来加深对模型工作原理的理解，并掌握其基本使用方法。
 
@@ -58,7 +58,7 @@ print(f"分词后语料: {tokenized_headlines}")
 dictionary = corpora.Dictionary(tokenized_headlines)
 print(f"词典: {dictionary.token2id}")
 
-# Step 3: 转换为BoW向量语料库
+# Step 3: 转换为 BoW 向量语料库
 corpus_bow = [dictionary.doc2bow(doc) for doc in tokenized_headlines]
 print(f"BoW语料库: {corpus_bow}")
 ```
@@ -90,14 +90,14 @@ headlines = [
 ]
 tokenized_headlines = [jieba.lcut(title) for title in headlines]
 
-# 2. 创建词典和BoW语料库
+# 2. 创建词典和 BoW 语料库
 dictionary = corpora.Dictionary(tokenized_headlines)
 corpus_bow = [dictionary.doc2bow(doc) for doc in tokenized_headlines]
 
-# 3. 训练TF-IDF模型
+# 3. 训练 TF-IDF 模型
 tfidf_model = models.TfidfModel(corpus_bow)
 
-# 4. 将BoW语料库转换为TF-IDF向量表示
+# 4. 将BoW语料库转换为 TF-IDF 向量表示
 corpus_tfidf = tfidf_model[corpus_bow]
 
 # 辅助函数：把 (token_id, weight) 转成 (token, weight)，并按权重降序展示
@@ -105,30 +105,30 @@ def tfidf_with_words(tfidf_vec, id2word):
     pairs = [(id2word[token_id], weight) for token_id, weight in tfidf_vec]
     return sorted(pairs, key=lambda x: x[1], reverse=True)
 
-# 打印第一篇标题的TF-IDF向量
+# 打印第一篇标题的 TF-IDF 向量
 first_tfidf = list(corpus_tfidf)[0]
-print("第一篇标题的TF-IDF向量:")
+print("第一篇标题的 TF-IDF 向量:")
 print(first_tfidf)
-print("第一篇标题的TF-IDF向量(带词语):")
+print("第一篇标题的 TF-IDF 向量(带词语):")
 print(tfidf_with_words(first_tfidf, dictionary))
 
 # 5. 对新标题应用模型
 new_headline = "股市大涨，牛市来了"
 new_headline_bow = dictionary.doc2bow(list(jieba.cut(new_headline)))
 new_headline_tfidf = tfidf_model[new_headline_bow]
-print("\n新标题的TF-IDF向量:")
+print("\n新标题的 TF-IDF 向量:")
 print(new_headline_tfidf)
 ```
 
 输出如下：
 
 ```bash
-第一篇标题的TF-IDF向量:
+第一篇标题的 TF-IDF 向量:
 [(0, 0.44066740566370055), (1, 0.44066740566370055), (2, 0.44066740566370055), (3, 0.44066740566370055), (4, 0.44066740566370055), (5, 0.1704734229377651)]
-第一篇标题的TF-IDF向量(带词语):
+第一篇标题的 TF-IDF 向量(带词语):
 [("刺激", 0.44066740566370055), ("反弹", 0.44066740566370055), ("央行", 0.44066740566370055), ("股市", 0.44066740566370055), ("降息", 0.44066740566370055), ("，", 0.1704734229377651)]
 
-新标题的TF-IDF向量:
+新标题的 TF-IDF 向量:
 [(3, 0.9326446771245245), (5, 0.360796211497975)]
 ```
 
@@ -152,11 +152,11 @@ headlines = [
 ]
 tokenized_headlines = [jieba.lcut(title) for title in headlines]
 
-# 2. 创建词典和BoW语料库
+# 2. 创建词典和 BoW 语料库
 dictionary = corpora.Dictionary(tokenized_headlines)
 corpus_bow = [dictionary.doc2bow(doc) for doc in tokenized_headlines]
 
-# 3. 训练LDA模型 (假设需要发现2个主题)
+# 3. 训练 LDA 模型 (假设需要发现 2 个主题)
 lda_model = models.LdaModel(corpus=corpus_bow, id2word=dictionary, num_topics=2, random_state=100)
 
 # 4. 查看模型发现的主题
@@ -291,4 +291,4 @@ print(f"\n加载后，'球队' 和 '球员' 的相似度: {loaded_wv.similarity(
 加载后，'球队' 和 '球员' 的相似度: -0.1552
 ```
 
-通过 Gensim，我们就可以非常方便地训练自己的 Word2Vec 模型，并利用其强大的语义捕捉能力进行相似度计算、语义类比等 NLP 任务。
+通过 Gensim，我们就可以非常方便地训练自己的 Word2Vec 模型，并利用它的语义捕捉能力进行相似度计算、语义类比等 NLP 任务。
