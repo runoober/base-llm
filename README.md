@@ -26,8 +26,9 @@
   </a>
 </div>
 
-> **注意：本项目可能进行大幅调整当前暂不接受 Pull Request。**
-> 如果您有任何建议或发现任何问题，欢迎通过 [Issue](https://github.com/datawhalechina/base-nlp/issues) 进行反馈。
+> **注意：**
+> - **关于 Pull Request**：本项目目前主要接受 `Extra-chapter` 的共建，提交 PR 前请参阅 [Extra-chapter/README.md](./Extra-chapter/README.md)。
+> - **问题反馈**：如果您对主教程有任何建议或发现任何问题，欢迎通过 [Issue](https://github.com/datawhalechina/base-nlp/issues) 进行反馈。
 
 ## 📖 项目简介
 
