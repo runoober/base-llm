@@ -177,4 +177,4 @@ pip install numpy pandas matplotlib scikit-learn jupyter
 pip install torch torchvision torchaudio
 ```
 
-（4）如果设备中有 GPU，并希望使用 CUDA，通过 `nvcc --version` 查看完 cuda 版本后可以参考 [PyTorch 官网](https://pytorch.org/get-started/locally/)的安装指令，选择与设备和显卡驱动匹配的 CUDA 版本。
+（4）如果设备中有 GPU，并希望使用 CUDA，可以在终端中输入 `nvidia-smi` 命令。接着查看输出信息的右上角（类似于 `CUDA Version: 12.x`），确认支持的最高 CUDA 版本后，再参考 [PyTorch 官网](https://pytorch.org/get-started/locally/)的安装指令，选择与设备和显卡驱动匹配的 PyTorch 版本进行安装。
