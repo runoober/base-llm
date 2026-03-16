@@ -15,18 +15,15 @@
   <img src="https://img.shields.io/github/stars/datawhalechina/base-llm?style=for-the-badge&logo=github&color=ff6b6b" alt="GitHub stars"/>
   <img src="https://img.shields.io/github/forks/datawhalechina/base-llm?style=for-the-badge&logo=github&color=4ecdc4" alt="GitHub forks"/>
   <img src="https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
-  <a href="https://github.com/datawhalechina/base-llm/releases">
-    <img src="https://img.shields.io/github/v/release/datawhalechina/base-llm?style=for-the-badge&logo=github&color=brightgreen" alt="GitHub release"/>
-  </a>
 </div>
 
 <div align="center">
+  <a href="https://github.com/datawhalechina/base-llm/releases">
+    <img src="https://img.shields.io/github/v/release/datawhalechina/base-llm?style=for-the-badge&logo=github&color=brightgreen" alt="GitHub release"/>
   <a href="https://datawhalechina.github.io/base-llm/">
     <img src="https://img.shields.io/badge/📖_在线阅读-立即开始-success?style=for-the-badge&logoColor=white" alt="在线阅读"/>
-  </a>
   <a href="https://github.com/datawhalechina">
     <img src="https://img.shields.io/badge/💬_讨论交流-加入我们-purple?style=for-the-badge&logoColor=white" alt="讨论交流"/>
-  </a>
 </div>
 
 > **注意：**

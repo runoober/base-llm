@@ -89,7 +89,7 @@ conda 25.11.0
 （1）推荐在 macOS / Linux 上使用 **Miniconda** 脚本方式安装，这样更轻量。以常见的 x86_64 Linux 为例，可以在终端中执行：
 
 ```bash
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
+curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash ~/miniconda.sh
 ```
 

@@ -15,18 +15,15 @@
   <img src="https://img.shields.io/github/stars/datawhalechina/base-llm?style=for-the-badge&logo=github&color=ff6b6b" alt="GitHub stars"/>
   <img src="https://img.shields.io/github/forks/datawhalechina/base-llm?style=for-the-badge&logo=github&color=4ecdc4" alt="GitHub forks"/>
   <img src="https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
-  <a href="https://github.com/datawhalechina/base-llm/releases">
-    <img src="https://img.shields.io/github/v/release/datawhalechina/base-llm?style=for-the-badge&logo=github&color=brightgreen" alt="GitHub release"/>
-  </a>
 </div>
 
 <div align="center">
+  <a href="https://github.com/datawhalechina/base-llm/releases">
+    <img src="https://img.shields.io/github/v/release/datawhalechina/base-llm?style=for-the-badge&logo=github&color=brightgreen" alt="GitHub release"/>
   <a href="https://datawhalechina.github.io/base-llm/">
     <img src="https://img.shields.io/badge/📖_在线阅读-立即开始-success?style=for-the-badge&logoColor=white" alt="在线阅读"/>
-  </a>
   <a href="https://github.com/datawhalechina">
     <img src="https://img.shields.io/badge/💬_讨论交流-加入我们-purple?style=for-the-badge&logoColor=white" alt="讨论交流"/>
-  </a>
 </div>
 
 > **注意：本项目可能进行大幅调整当前暂不接受 Pull Request。**
@@ -89,6 +86,7 @@
 ### 第一部分：理论篇
 - **第1章：NLP简介**
     - [x] [NLP 概述](./chapter1/01_nlp_intro.md)
+    - [x] [环境准备](./chapter1/02_preparation.md)
 - **第2章：文本表示与词向量**
     - [x] [初级分词技术](./chapter2/03_tokenization.md)
     - [x] [词向量表示](./chapter2/04_word_vector.md)
@@ -165,6 +163,7 @@
 ## 致谢
 
 **核心贡献者**
+
 - [dalvqw-项目负责人](https://github.com/FutureUnreal)（项目发起人与主要贡献者）
 
 ### 特别感谢
