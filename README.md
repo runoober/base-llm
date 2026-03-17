@@ -20,10 +20,13 @@
 <div align="center">
   <a href="https://github.com/datawhalechina/base-llm/releases">
     <img src="https://img.shields.io/github/v/release/datawhalechina/base-llm?style=for-the-badge&logo=github&color=brightgreen" alt="GitHub release"/>
+  </a>
   <a href="https://datawhalechina.github.io/base-llm/">
     <img src="https://img.shields.io/badge/📖_在线阅读-立即开始-success?style=for-the-badge&logoColor=white" alt="在线阅读"/>
+  </a>
   <a href="https://github.com/datawhalechina">
     <img src="https://img.shields.io/badge/💬_讨论交流-加入我们-purple?style=for-the-badge&logoColor=white" alt="讨论交流"/>
+  </a>
 </div>
 
 > **注意：**
@@ -175,7 +178,7 @@
 - 感谢开源社区提供的优秀工具和框架支持
 - 特别感谢以下为教程做出贡献的开发者！
 
-[![Contributors](https://contrib.rocks/image?repo=datawhalechina/base-nlp)](https://github.com/datawhalechina/base-nlp/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=datawhalechina/base-llm)](https://github.com/datawhalechina/base-llm/graphs/contributors)
 
 *Made with [contrib.rocks](https://contrib.rocks).*
 
@@ -185,7 +188,7 @@
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=datawhalechina/base-nlp&type=Date)](https://star-history.com/#datawhalechina/base-nlp&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=datawhalechina/base-llm&type=Date)](https://star-history.com/#datawhalechina/base-llm&Date)
 
 <div align="center">
   <p>如果这个项目对你有帮助，请给我们一个 ⭐️</p>
