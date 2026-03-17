@@ -84,8 +84,8 @@ import re
 # 为了进行探索，先定义一个简单的分词函数
 def basic_tokenize(text):
     text = text.lower()
-    text = re.sub(r"[^a-z0-9(),.!?\\'`]", " ", text)
-    text = re.sub(r"([,.!?\\'`])", r" \\1 ", text)
+    text = re.sub(r"[^a-z0-9(),.!?\'`]", " ", text)
+    text = re.sub(r"([,.!?\'`])", r" \1 ", text)
     tokens = text.strip().split()
     return tokens
 
