@@ -92,7 +92,7 @@ print(seg_list)
 ```python
 # 未加载词典前的错误分词
 text = "九头虫让奔波儿灞把唐僧师徒除掉"
-print(f"精准模式: {jieba.lcut(text, cut_all=False)}")
+print(f"精确模式: {jieba.lcut(text, cut_all=False)}")
 
 # 加载自定义词典
 jieba.load_userdict("./user_dict.txt") 
@@ -102,7 +102,7 @@ print(f"加载词典后: {jieba.lcut(text, cut_all=False)}")
 输出如下：
 
 ```bash
-精准模式: ['九头', '虫', '让', '奔波', '儿', '灞', '把', '唐僧', '师徒', '除掉']
+精确模式: ['九头', '虫', '让', '奔波', '儿', '灞', '把', '唐僧', '师徒', '除掉']
 加载词典后: ['九头虫', '让', '奔波儿灞', '把', '唐僧', '师徒', '除掉']
 ```
 
