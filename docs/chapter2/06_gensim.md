@@ -139,6 +139,7 @@ print(new_headline_tfidf)
 主题模型（如 LDA）能从大量文档中自动发现隐藏的、无监督的主题。它的输入同样是词典和 BoW 语料库。
 
 ```python
+import jieba
 from gensim import corpora, models
 
 # 1. 准备语料
