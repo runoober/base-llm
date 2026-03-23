@@ -161,7 +161,7 @@
     - [x] [图文多模态](./docs/chapter19/02_ViT_CLIP.md)
 - **第 2 章：视觉问答**
     - [x] [BLIP-2 与 LLaVA](./docs/chapter20/01_blip2_llava.md)
-    - [x] [原生统一架构](./docs/chapter20/02_unified_architecture.md)
+    - [x] [原生统一架构](./docs/chapter20/02_native_unified.md)
     - [x] [从 0 训练简化版 Omni 模型](./docs/chapter20/03_simplified_omni.md)
 
 
