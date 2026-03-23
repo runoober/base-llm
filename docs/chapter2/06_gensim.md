@@ -114,7 +114,7 @@ print(tfidf_with_words(first_tfidf, dictionary))
 
 # 5. 对新标题应用模型
 new_headline = "股市大涨，牛市来了"
-new_headline_bow = dictionary.doc2bow(list(jieba.cut(new_headline)))
+new_headline_bow = dictionary.doc2bow(jieba.lcut(new_headline))
 new_headline_tfidf = tfidf_model[new_headline_bow]
 print("\n新标题的 TF-IDF 向量:")
 print(new_headline_tfidf)
@@ -139,6 +139,7 @@ print(new_headline_tfidf)
 主题模型（如 LDA）能从大量文档中自动发现隐藏的、无监督的主题。它的输入同样是词典和 BoW 语料库。
 
 ```python
+import jieba
 from gensim import corpora, models
 
 # 1. 准备语料

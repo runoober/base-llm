@@ -6,7 +6,7 @@ print(seg_list)
 
 # 未加载词典前的错误分词
 text2 = "九头虫让奔波儿灞把唐僧师徒除掉"
-print(f"精准模式: {jieba.lcut(text2, cut_all=False)}")
+print(f"精确模式: {jieba.lcut(text2, cut_all=False)}")
 
 # 加载自定义词典
 jieba.load_userdict("./user_dict.txt") 
