@@ -71,7 +71,7 @@ class NerDataset(Dataset):
                     tags[i] = f'M-{entity_type}'
         
         # 将标签转换为 ids
-        label_ids = [self.tag_to_id[tag] for tag in tags]
+        label_ids = [self.tag_to_id.get(tag, self.tag_to_id['O']) for tag in tags]
 
         return {
             "token_ids": torch.tensor(token_ids, dtype=torch.long),

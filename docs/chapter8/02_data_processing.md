@@ -462,7 +462,7 @@ class NerDataset(Dataset):
                     tags[i] = f'M-{entity_type}' # 实体中间
 
         # 5. 将 BMES 标签字符串序列转换为 label_ids
-        label_ids = [self.tag_to_id[tag] for tag in tags]
+        label_ids = [self.tag_to_id.get(tag, self.tag_to_id['O']) for tag in tags]
 
         # 6. 返回包含两个 Tensor 的字典
         return {

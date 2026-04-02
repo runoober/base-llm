@@ -73,3 +73,6 @@
         - [BLIP-2 与 LLaVA](chapter20/01_blip2_llava.md)
         - [原生统一架构](chapter20/02_native_unified.md)
         - [从 0 训练简化版 Omni 模型](chapter20/03_simplified_omni.md)
+
+- **Extra-chapter 精选**
+
